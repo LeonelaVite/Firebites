@@ -53,7 +53,7 @@ Git registra cambios locales en commits; GitHub hospeda el repositorio y Pages p
 
 ## 10. Publicación y mantenimiento
 
-Pages ejecuta el workflow al actualizar `main`; su artefacto solo incluye el frontend estático. El backend y PostgreSQL se configuran aparte. El README explica variables y comandos. No se considera publicada hasta ver el job verde y probar la URL reportada. Rotar contraseñas o claves implica actualizar el servicio donde viven y desplegarlo nuevamente.
+Pages ejecutará el workflow al actualizar `main` una vez habilitada la fuente **Settings → Pages → Build and deployment → GitHub Actions**. El primer run devolvió `404 Not Found` porque Pages aún no está configurado; su job no subió artefacto y la web no está publicada. El artefacto solo incluye el frontend estático; el backend y PostgreSQL se configuran aparte. No se considera publicada hasta que el job termine en verde y se pruebe la URL reportada. Rotar contraseñas o claves implica actualizar el servicio donde viven y desplegarlo nuevamente.
 
 ## 11. Dificultades y decisiones
 

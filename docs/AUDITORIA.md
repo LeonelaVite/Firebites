@@ -12,17 +12,18 @@ Revisión del checkout local antes de cambios, comparado con «Proyecto Final Av
 | Frontend/backend y datos | Pendiente | Solo HTML, CSS y JS plano; sin dependencias | No existían API o datos persistentes | Frontend estático conservado y API Node/PostgreSQL separada |
 | UX responsive/accesibilidad | Parcialmente implementado | Flexbox/tarjetas y animación en `style.css` | Hero a 750px, sin menú adaptable ni estados ni foco | CSS adaptable, menú móvil, contraste, foco, `prefers-reduced-motion`, estados y semántica |
 | Git y 15 commits | Parcialmente implementado | Dos commits al inicio, remoto GitHub en configuración local | Menos de 15 commits verificados | Registrar solo cambios funcionales reales; no crear commits vacíos. El historial final se informa al cierre |
-| GitHub Pages | No verificable | No había workflow; remoto presente | Estado publicado, Actions y URL no verificables offline | Workflow Pages agregado. Requiere habilitar Actions, variable pública de API y ejecución verde |
+| GitHub Pages | No verificable al inicio; despliegue intentado al cierre | Workflow agregado y el primer run ejecutó con el commit nuevo | GitHub devolvió `404 Not Found` al buscar el sitio Pages; configuración y publicación no existen todavía | Un administrador/mantenedor debe elegir **Settings → Pages → Build and deployment → Source → GitHub Actions**. Después se vuelve a ejecutar el workflow |
 | Responsive/publicado y errores de navegador | No verificable inicialmente | No había runner/browser ni servicios | No existe versión desplegada comprobada ni evidencia de consola | Revisión estática posible; pruebas con browser/red requieren servir el frontend y configurar servicios |
 | Instrucciones de entrega y exposición | Pendiente | Sin documentación del proyecto | No había guía para instalar, configurar o defenderlo | README y guía de exposición añadidos |
 
-Al cierre se crearon 16 commits locales nuevos con cambios funcionales separados; junto con los dos commits originales, el historial local contiene 18 commits. Esos commits locales no se han publicado a GitHub.
+Al cierre se crearon 17 commits nuevos con cambios funcionales/documentales separados; junto con los dos commits originales, el historial local contiene 19 commits. Se subieron a `main` en GitHub.
 
 ## Verificaciones realizadas
 
 - Inspección de todos los archivos del checkout, dependencias (no había `package.json`), recursos gráficos, referencias HTML, `.git`, rama/remoto e historial inicial.
 - Extracción de texto del documento PDF, 12 páginas; la pauta pide home, catálogo, formulario real, admin, IA, separación de capas, UX responsive, Git con 15 commits y GitHub Pages.
-- La referencia remota `HEAD` se pudo leer con `git ls-remote`; no se inspeccionaron workflows remotos, Pages ni el contenido desplegado.
+- `main` se subió a GitHub en `7864325`; el primer run de Actions procesó ese mismo SHA (`7864325443bf4d293c92024d360337e148e9ef05`).
+- Run `40040297902` finalizó en `failure`: checkout pasó, `actions/configure-pages` falló con `Get Pages site failed: Not Found`, y los pasos de artefacto/despliegue se omitieron. No hay URL publicada verificada. El run está enlazado en [GitHub Actions](https://github.com/LeonelaVite/Firebites/actions/runs/40040297902).
 - `node --check` pasa en JavaScript del frontend y backend. `pnpm test` pasa 8 pruebas automatizadas (validaciones de producto/contacto y referencias estáticas internas/recursos).
 - La inspección visual del sitio no pudo abrir el archivo local: la política del navegador bloqueó el protocolo `file:` y no se eludió esa restricción. Se inspeccionaron las imágenes directamente. El hero usa transparencia preservada en WebP lossless; verificar su composición final dentro del sitio requiere una captura en navegador.
 - Cuatro PNG de contenido sumaban 10,063,459 bytes; las versiones WebP suman 2,349,890 bytes (reducción aproximada del 77%). Los PNG originales se conservan.
