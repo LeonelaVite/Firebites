@@ -11,6 +11,7 @@ Sitio estático de catálogo para un emprendimiento de snacks picantes y API Nod
 - `backend/src/db.js`: conexión, esquema y productos iniciales.
 - `backend/.env.example`: nombres de configuración requeridos, sin credenciales.
 - `.github/workflows/pages.yml`: publicación automática de los archivos estáticos desde `main`.
+- `netlify.toml` y `scripts/build-static.js`: paquete estático alternativo para Netlify; excluye los fuentes del backend.
 - `docs/`: auditoría y guía para la defensa.
 
 ## Ejecutar localmente
@@ -35,6 +36,12 @@ npm run dev
 En otra terminal, desde la raíz, sirve el frontend en `http://127.0.0.1:5500` (por ejemplo con Live Server). `api-config.js` usa la misma URL cuando está vacío; para probar desde Live Server en distinto puerto, edítalo temporalmente a `http://localhost:3000` y restaura el archivo antes de publicar. La API permite solo el origen exacto indicado por `FRONTEND_ORIGIN`.
 
 ## Servicios necesarios para desplegar
+
+### Netlify (alternativa estática)
+
+El PDF requiere GitHub Pages; Netlify no reemplaza ese entregable. Si también deseas la URL de Netlify, crea/importa el proyecto desde GitHub y conecta el repositorio `LeonelaVite/Firebites`. Netlify ejecutará `node scripts/build-static.js` y publicará `dist/`; el paquete solo contiene los HTML, CSS, JavaScript, `api-config.js` generado y `img/`. Define `FIREBITES_API_URL` en las variables de entorno de build del sitio. Luego publica desde el panel y confirma que el deploy termine correctamente. Este deploy sirve el frontend: la API Express y PostgreSQL todavía deben desplegarse por separado.
+
+Netlify configura build y carpeta de publicación desde `netlify.toml`; el código también puede empaquetarse desde el panel como un sitio importado desde GitHub. [La documentación de Netlify explica esas opciones](https://docs.netlify.com/build/configure-builds/overview/) y [la conexión de un repositorio existente](https://docs.netlify.com/start/quickstarts/deploy-from-repository/).
 
 1. Despliega `backend/` en un servicio Node.js y crea una base de datos PostgreSQL administrada. Configura `DATABASE_URL`, `DB_SSL=true`, `NODE_ENV=production`, `PORT`, `FRONTEND_ORIGIN` (el origen exacto de Pages, sin ruta), `ADMIN_EMAIL` y `ADMIN_PASSWORD_HASH` como variables del servicio. Usa `pnpm install --frozen-lockfile` y `pnpm start` como instalación e inicio. Mantén la URL de la API en HTTPS.
 2. Genera el hash localmente con `pnpm run hash-password`, sin poner la contraseña en el repositorio o en el comando. Guarda el hash en las variables del servicio.
