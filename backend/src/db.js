@@ -5,7 +5,7 @@ const pool = new Pool({
   ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: true } : false,
   max: 10,
   idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 8_000
+  connectionTimeoutMillis: 8_000,
 });
 
 async function migrate() {
@@ -44,14 +44,53 @@ async function migrate() {
         applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
     `);
-    const initialSeed = await client.query("INSERT INTO app_migrations(name) VALUES('initial-products') ON CONFLICT DO NOTHING RETURNING name");
+    const initialSeed = await client.query(
+      "INSERT INTO app_migrations(name) VALUES('initial-products') ON CONFLICT DO NOTHING RETURNING name",
+    );
     if (initialSeed.rowCount) {
       const seeds = [
-        ["gomitas-picantes", "Gomitas Picantes", "img/gomitas.webp", "Dulces, suaves y con el toque de chile descrito en el catálogo original.", "Gomitas"],
-        ["algodon-picante", "Algodón de azúcar picante", "img/algodon.webp", "El clásico algodón con una explosión de sabor.", "Algodón de azúcar"],
-        ["paletas-enchiladas", "Paletas Enchiladas", "img/paletas.webp", "Paletas dulces con chamoy y chile, según la descripción original.", "Paletas"]
+        [
+          "gomitas-picantes",
+          "Gomitas Picantes",
+          "img/gomitas.webp",
+          "Dulces, suaves y con el toque de chile descrito en el catálogo original.",
+          "Gomitas",
+          1.5,
+        ],
+        [
+          "algodon-picante",
+          "Algodón de azúcar picante",
+          "img/algodon.webp",
+          "El clásico algodón con una explosión de sabor.",
+          "Algodón de azúcar",
+          1.35,
+        ],
+        [
+          "paletas-enchiladas",
+          "Paletas Enchiladas",
+          "img/paletas.webp",
+          "Paletas dulces con chamoy y chile, según la descripción original.",
+          "Paletas",
+          1.0,
+        ],
       ];
-      for (const product of seeds) await client.query("INSERT INTO products (slug,name,image,description,category) VALUES ($1,$2,$3,$4,$5) ON CONFLICT (slug) DO NOTHING", product);
+      for (const product of seeds)
+        await client.query(
+          "INSERT INTO products (slug,name,image,description,category,price) VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT (slug) DO NOTHING",
+          product,
+        );
+    }
+    const confirmedPrices = await client.query(
+      "INSERT INTO app_migrations(name) VALUES('confirmed-product-prices-2026-10') ON CONFLICT DO NOTHING RETURNING name",
+    );
+    if (confirmedPrices.rowCount) {
+      await client.query(`UPDATE products SET price = CASE slug
+        WHEN 'gomitas-picantes' THEN 1.50
+        WHEN 'algodon-picante' THEN 1.35
+        WHEN 'paletas-enchiladas' THEN 1.00
+        ELSE price
+      END, updated_at = NOW()
+      WHERE slug IN ('gomitas-picantes','algodon-picante','paletas-enchiladas') AND price IS NULL`);
     }
     await client.query("COMMIT");
   } catch (error) {

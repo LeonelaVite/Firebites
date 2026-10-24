@@ -1,20 +1,161 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#17100d">
-  <title>Administración | FireBites</title><link rel="icon" type="image/png" href="img/favicon.png"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="admin.css"><script src="api-config.js"></script><script src="admin.js" defer></script>
-</head>
-<body class="admin-page">
-  <a class="skip-link" href="#admin-content">Saltar al contenido</a>
-  <header class="site-header"><a class="brand" href="index.html"><span aria-hidden="true">🌶️</span> FireBites</a><a class="text-link" href="index.html">← Volver a la tienda</a></header>
-  <main id="admin-content" class="admin-main">
-    <section id="login-panel" class="admin-login" aria-labelledby="login-title"><p class="eyebrow">ÁREA PRIVADA</p><h1 id="login-title">Administración</h1><p>Inicia sesión para gestionar el catálogo FireBites.</p><form id="login-form"><label>Correo<input name="email" type="email" autocomplete="username" required></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required></label><p class="admin-status" id="login-status" role="status" aria-live="polite"></p><button class="button button-primary" type="submit">Iniciar sesión</button></form><p class="admin-footnote">El servidor valida la sesión y los permisos. Esta página no almacena contraseñas.</p></section>
-    <section id="dashboard" class="dashboard" hidden>
-      <div class="dashboard-heading"><div><p class="eyebrow">GESTIÓN DE CATÁLOGO</p><h1>Productos</h1></div><button id="logout-button" class="button button-outline" type="button">Cerrar sesión</button></div>
-      <p id="dashboard-status" class="admin-status" role="status" aria-live="polite"></p>
-      <div class="dashboard-grid"><form id="product-form" class="product-editor"><h2 id="editor-title">Añadir producto</h2><input type="hidden" name="id"><label>Nombre<input name="name" minlength="2" maxlength="120" required></label><label>Identificador (slug)<input name="slug" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required><small>Solo minúsculas, números y guiones.</small></label><label>Ruta de imagen<input name="image" placeholder="img/gomitas.png" maxlength="300" required></label><label>Descripción<textarea name="description" minlength="5" maxlength="1000" rows="3" required></textarea></label><div class="admin-row"><label>Categoría<input name="category" maxlength="80" required></label><label>Precio (opcional)<input name="price" type="number" min="0" step="0.01"></label></div><div class="admin-row"><label>Nivel de picante (opcional)<input name="spiceLevel" maxlength="50"></label><label>Disponibilidad<select name="available"><option value="">Por confirmar</option><option value="true">Disponible</option><option value="false">Agotado</option></select></label></div><div class="editor-actions"><button class="button button-primary" type="submit">Guardar producto</button><button id="cancel-edit" class="button button-outline" type="button" hidden>Cancelar edición</button></div></form>
-      <section class="admin-products" aria-labelledby="admin-list-title"><h2 id="admin-list-title">Catálogo actual</h2><div id="admin-product-list" class="admin-list" aria-live="polite"></div></section></div>
-    </section>
-  </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#17100d" />
+    <title>Administración | FireBites</title>
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="api-config.js"></script>
+    <script src="admin.js" defer></script>
+  </head>
+  <body class="admin-page">
+    <a class="skip-link" href="#admin-content">Saltar al contenido</a>
+    <header class="site-header">
+      <a class="brand" href="index.html"
+        ><span aria-hidden="true">🌶️</span> FireBites</a
+      ><a class="text-link" href="index.html">← Volver a la tienda</a>
+    </header>
+    <main id="admin-content" class="admin-main">
+      <section
+        id="login-panel"
+        class="admin-login"
+        aria-labelledby="login-title"
+      >
+        <p class="eyebrow">ÁREA PRIVADA</p>
+        <h1 id="login-title">Administración</h1>
+        <p>Inicia sesión para gestionar el catálogo FireBites.</p>
+        <form id="login-form">
+          <label
+            >Correo<input
+              name="email"
+              type="email"
+              autocomplete="username"
+              required /></label
+          ><label
+            >Contraseña<input
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+          /></label>
+          <p
+            class="admin-status"
+            id="login-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+          <button class="button button-primary" type="submit">
+            Iniciar sesión
+          </button>
+        </form>
+        <p class="admin-footnote">
+          El servidor valida la sesión y los permisos. Esta página no almacena
+          contraseñas.
+        </p>
+      </section>
+      <section id="dashboard" class="dashboard" hidden>
+        <div class="dashboard-heading">
+          <div>
+            <p class="eyebrow">GESTIÓN DE CATÁLOGO</p>
+            <h1>Productos</h1>
+          </div>
+          <button
+            id="logout-button"
+            class="button button-outline"
+            type="button"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+        <p
+          id="dashboard-status"
+          class="admin-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+        <div class="dashboard-grid">
+          <form id="product-form" class="product-editor">
+            <h2 id="editor-title">Añadir producto</h2>
+            <input type="hidden" name="id" /><label
+              >Nombre<input
+                name="name"
+                minlength="2"
+                maxlength="120"
+                required /></label
+            ><label
+              >Identificador (slug)<input
+                name="slug"
+                pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                required
+              /><small>Solo minúsculas, números y guiones.</small></label
+            ><label
+              >Ruta de imagen<input
+                name="image"
+                placeholder="img/gomitas.png"
+                maxlength="300"
+                required /></label
+            ><label
+              >Descripción<textarea
+                name="description"
+                minlength="5"
+                maxlength="1000"
+                rows="3"
+                required
+              ></textarea>
+            </label>
+            <div class="admin-row">
+              <label
+                >Categoría<input
+                  name="category"
+                  maxlength="80"
+                  required /></label
+              ><label
+                >Precio (opcional)<input
+                  name="price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+              /></label>
+            </div>
+            <div class="admin-row">
+              <label
+                >Nivel de picante (opcional)<input
+                  name="spiceLevel"
+                  maxlength="50" /></label
+              ><label
+                >Disponibilidad<select name="available">
+                  <option value="">Por confirmar</option>
+                  <option value="true">Disponible</option>
+                  <option value="false">Agotado</option>
+                </select></label
+              >
+            </div>
+            <div class="editor-actions">
+              <button class="button button-primary" type="submit">
+                Guardar producto</button
+              ><button
+                id="cancel-edit"
+                class="button button-outline"
+                type="button"
+                hidden
+              >
+                Cancelar edición
+              </button>
+            </div>
+          </form>
+          <section class="admin-products" aria-labelledby="admin-list-title">
+            <h2 id="admin-list-title">Catálogo actual</h2>
+            <div
+              id="admin-product-list"
+              class="admin-list"
+              aria-live="polite"
+            ></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>

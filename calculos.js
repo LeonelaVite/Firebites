@@ -2,20 +2,20 @@ console.log("calculos.js conectado correctamente ✅");
 
 // Función 1: calcular el subtotal de una compra
 function calcularSubtotal(precioProducto, cantidad) {
-    let subtotal = precioProducto * cantidad;
-    return subtotal;
+  let subtotal = precioProducto * cantidad;
+  return subtotal;
 }
 
 // Función 2: aplicar un descuento
 function calcularTotalConDescuento(subtotal, porcentajeDescuento) {
-    let descuento = subtotal * (porcentajeDescuento / 100);
-    let total = subtotal - descuento;
-    return total;
+  let descuento = subtotal * (porcentajeDescuento / 100);
+  let total = subtotal - descuento;
+  return total;
 }
 
 // Variables
 let nombreProducto = "Algodón de azúcar picante";
-let precioProducto = 4.50;
+let precioProducto = 4.5;
 let cantidad = 3;
 let porcentajeDescuento = 10;
 

@@ -16,11 +16,23 @@ const frontendOrigin = process.env.FRONTEND_ORIGIN;
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 app.use(helmet());
-app.use(cors({ origin: frontendOrigin, credentials: true, methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], allowedHeaders: ["Content-Type"] }));
+app.use(
+  cors({
+    origin: frontendOrigin,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  }),
+);
 app.use(express.json({ limit: "16kb" }));
 app.use(cookieParser());
 app.use((req, res, next) => {
-  if (["POST", "PUT", "DELETE"].includes(req.method) && req.path.startsWith("/api/") && req.get("origin") !== frontendOrigin) return res.status(403).json({ error: "Origen no autorizado." });
+  if (
+    ["POST", "PUT", "DELETE"].includes(req.method) &&
+    req.path.startsWith("/api/") &&
+    req.get("origin") !== frontendOrigin
+  )
+    return res.status(403).json({ error: "Origen no autorizado." });
   next();
 });
 app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
@@ -30,9 +42,21 @@ app.use("/api/assistant", assistantRouter);
 app.use("/api/admin", adminAuthRouter);
 app.use("/api/admin/products", adminProductsRouter);
 app.use((error, _req, res, _next) => {
-  if (error.code === "23505") return res.status(409).json({ error: "Ya existe un producto con ese identificador." });
+  if (error.code === "23505")
+    return res
+      .status(409)
+      .json({ error: "Ya existe un producto con ese identificador." });
   console.error(error.message);
-  res.status(500).json({ error: "Ocurrió un error interno. Intenta más tarde." });
+  res
+    .status(500)
+    .json({ error: "Ocurrió un error interno. Intenta más tarde." });
 });
 
-migrate().then(() => app.listen(port, () => console.log(`FireBites API listening on ${port}`))).catch((error) => { console.error("Database initialization failed:", error.message); process.exit(1); });
+migrate()
+  .then(() =>
+    app.listen(port, () => console.log(`FireBites API listening on ${port}`)),
+  )
+  .catch((error) => {
+    console.error("Database initialization failed:", error.message);
+    process.exit(1);
+  });
