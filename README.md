@@ -5,6 +5,7 @@ Sitio estático de catálogo para un emprendimiento de snacks picantes y API Nod
 ## Estructura
 
 - `index.html`, `style.css`, `app.js`, `api-config.js`: frontend de GitHub Pages.
+- `cart.js`: reglas del carrito, cantidades, importes y resumen de pedido por WhatsApp.
 - `admin.html`, `admin.css`, `admin.js`: interfaz privada; el backend controla cada permiso.
 - `img/`: imágenes originales conservadas y versiones WebP optimizadas que usa la web.
 - `backend/src/server.js`: endpoints HTTP y validaciones.
@@ -42,6 +43,8 @@ En otra terminal, desde la raíz, sirve el frontend en `http://127.0.0.1:5500` (
 El PDF requiere GitHub Pages; Netlify no reemplaza ese entregable. Si también deseas la URL de Netlify, crea/importa el proyecto desde GitHub y conecta el repositorio `LeonelaVite/Firebites`. Netlify ejecutará `node scripts/build-static.js` y publicará `dist/`; el paquete solo contiene los HTML, CSS, JavaScript, `api-config.js` generado y `img/`. Define `FIREBITES_API_URL` en las variables de entorno de build del sitio. Luego publica desde el panel y confirma que el deploy termine correctamente. Este deploy sirve el frontend: la API Express y PostgreSQL todavía deben desplegarse por separado.
 
 Netlify configura build y carpeta de publicación desde `netlify.toml`; el código también puede empaquetarse desde el panel como un sitio importado desde GitHub. [La documentación de Netlify explica esas opciones](https://docs.netlify.com/build/configure-builds/overview/) y [la conexión de un repositorio existente](https://docs.netlify.com/start/quickstarts/deploy-from-repository/).
+
+Para activar **Finalizar pedido por WhatsApp**, configura el número internacional real de FireBites, solo con dígitos y código de país (sin `+`, espacios ni guiones), como variable de build `FIREBITES_WHATSAPP_NUMBER` en Netlify. En GitHub Pages, agrega la misma clave como variable del repositorio en **Settings → Secrets and variables → Actions → Variables**; el workflow la copia a `api-config.js`. Para probar localmente, establece `window.FIREBITES_WHATSAPP_NUMBER` en `api-config.js`. Mientras esté vacío, el carrito y el resumen funcionan, pero el checkout explica que falta el número y no abre un destino inventado. El botón prepara el texto en WhatsApp; la persona debe revisarlo y enviarlo, y FireBites debe confirmar el pedido. El envío se coordina aparte y no se procesa ningún pago en la página.
 
 1. Despliega `backend/` en un servicio Node.js y crea una base de datos PostgreSQL administrada. Configura `DATABASE_URL`, `DB_SSL=true`, `NODE_ENV=production`, `PORT`, `FRONTEND_ORIGIN` (el origen exacto de Pages, sin ruta), `ADMIN_EMAIL` y `ADMIN_PASSWORD_HASH` como variables del servicio. Usa `pnpm install --frozen-lockfile` y `pnpm start` como instalación e inicio. Mantén la URL de la API en HTTPS.
 2. Genera el hash localmente con `pnpm run hash-password`, sin poner la contraseña en el repositorio o en el comando. Guarda el hash en las variables del servicio.

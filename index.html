@@ -18,6 +18,7 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script src="api-config.js"></script>
+    <script src="cart.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -38,6 +39,12 @@
       <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
         <a href="#inicio">Inicio</a><a href="#catalogo">Catálogo</a
         ><a href="#nosotros">Nosotros</a><a href="#contacto">Contacto</a>
+        <a
+          class="nav-cart"
+          href="#carrito"
+          aria-label="Carrito de compras, 0 artículos"
+          >Carrito <span id="cart-count" class="cart-count">0</span></a
+        >
         <a class="nav-cta" href="#catalogo"
           >Explorar sabores <span aria-hidden="true">↗</span></a
         >
@@ -120,6 +127,62 @@
             Activa JavaScript para explorar el catálogo y enviar consultas.
           </p></noscript
         >
+      </section>
+      <section
+        class="cart-section section-wrap"
+        id="carrito"
+        aria-labelledby="cart-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">TU SELECCIÓN</p>
+            <h2 id="cart-title">Tu carrito <span>FireBites</span></h2>
+          </div>
+          <p class="section-intro">
+            Revisa las cantidades antes de preparar tu consulta de pedido.
+          </p>
+        </div>
+        <p
+          id="cart-feedback"
+          class="cart-feedback"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+        <div id="cart-items" class="cart-items"></div>
+        <div class="cart-footer">
+          <div class="cart-total">
+            <span>Subtotal de productos</span>
+            <strong id="cart-subtotal">$0,00</strong>
+          </div>
+          <p class="cart-shipping-note">
+            El envío y la disponibilidad se confirman al coordinar el pedido.
+          </p>
+          <p id="whatsapp-config-note" class="cart-config-note"></p>
+          <div class="cart-actions">
+            <button
+              id="clear-cart"
+              class="button button-secondary"
+              type="button"
+              disabled
+            >
+              Vaciar carrito
+            </button>
+            <button
+              id="checkout-whatsapp"
+              class="button button-primary"
+              type="button"
+              disabled
+            >
+              Finalizar pedido por WhatsApp <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <p class="cart-disclaimer">
+            Se abrirá WhatsApp con el resumen para que puedas revisarlo y
+            enviarlo. El pedido no queda enviado ni confirmado hasta recibir
+            respuesta de FireBites. No se realizan cobros en esta página.
+          </p>
+        </div>
       </section>
       <section class="about" id="nosotros" aria-labelledby="about-title">
         <div class="about-mark" aria-hidden="true">F<span>B</span></div>

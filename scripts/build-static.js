@@ -6,6 +6,7 @@ const publicFiles = [
   "index.html",
   "style.css",
   "app.js",
+  "cart.js",
   "admin.html",
   "admin.css",
   "admin.js",
@@ -14,6 +15,8 @@ const publicFiles = [
 function buildStatic(options = {}) {
   const outputDir = options.outputDir || path.join(root, "dist");
   const apiUrl = options.apiUrl ?? process.env.FIREBITES_API_URL ?? "";
+  const whatsappNumber =
+    options.whatsappNumber ?? process.env.FIREBITES_WHATSAPP_NUMBER ?? "";
   fs.mkdirSync(outputDir, { recursive: true });
   for (const file of publicFiles)
     fs.copyFileSync(path.join(root, file), path.join(outputDir, file));
@@ -23,7 +26,7 @@ function buildStatic(options = {}) {
   });
   fs.writeFileSync(
     path.join(outputDir, "api-config.js"),
-    `window.FIREBITES_API_URL = ${JSON.stringify(apiUrl)};\n`,
+    `window.FIREBITES_API_URL = ${JSON.stringify(apiUrl)};\nwindow.FIREBITES_WHATSAPP_NUMBER = ${JSON.stringify(whatsappNumber)};\n`,
     "utf8",
   );
   return outputDir;

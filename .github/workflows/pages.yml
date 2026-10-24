@@ -23,10 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - name: Configure public API address
+      - name: Configure public service addresses
         env:
           API_URL: ${{ vars.FIREBITES_API_URL }}
-        run: node -e 'const fs=require("node:fs"); const url=process.env.API_URL||""; fs.writeFileSync("api-config.js", `window.FIREBITES_API_URL = ${JSON.stringify(url)};\n`);'
+          WHATSAPP_NUMBER: ${{ vars.FIREBITES_WHATSAPP_NUMBER }}
+        run: node -e 'const fs=require("node:fs"); const apiUrl=process.env.API_URL||""; const whatsappNumber=process.env.WHATSAPP_NUMBER||""; fs.writeFileSync("api-config.js", `window.FIREBITES_API_URL = ${JSON.stringify(apiUrl)};\nwindow.FIREBITES_WHATSAPP_NUMBER = ${JSON.stringify(whatsappNumber)};\n`);'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
