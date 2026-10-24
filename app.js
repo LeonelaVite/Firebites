@@ -130,7 +130,7 @@ function renderCart() {
   );
   $("#whatsapp-config-note").textContent = whatsappNumber
     ? "Puedes revisar el pedido antes de enviarlo por WhatsApp."
-    : "Falta configurar el número de WhatsApp de FireBites; el checkout se habilitará al agregarlo a api-config.js o a FIREBITES_WHATSAPP_NUMBER en el despliegue.";
+    : "Número no configurado: agrega el número real de FireBites a api-config.js o a FIREBITES_WHATSAPP_NUMBER en el despliegue para abrir el pedido en WhatsApp.";
 }
 
 function renderProducts() {
